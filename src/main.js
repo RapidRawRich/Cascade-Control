@@ -7,6 +7,7 @@ import { DiagramsView } from './components/diagramsView.js';
 import { SpeedStudio } from './components/speedStudio.js';
 import { TuningStudio } from './components/tuningStudio.js';
 import { ModesStudio } from './components/modesStudio.js';
+import { UmlStudio } from './components/umlStudio.js';
 import { SelfTestQuiz } from './components/selfTestQuiz.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -107,6 +108,9 @@ document.addEventListener('DOMContentLoaded', () => {
       fpFIC?.render();
     });
   }
+
+  const umlContainer = document.getElementById('tab-uml');
+  if (umlContainer) new UmlStudio(umlContainer);
 
   const quizContainer = document.getElementById('tab-quiz');
   if (quizContainer) new SelfTestQuiz(quizContainer);

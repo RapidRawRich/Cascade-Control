@@ -32,6 +32,7 @@ test.describe('Cascade Control ILM 310305e Interactive UI Tests', () => {
       { id: 'tab-btn-tuning', panelId: 'tab-tuning', checkText: 'Objective Four' },
       { id: 'tab-btn-valve', panelId: 'tab-valve', checkText: 'Cutaway Pneumatic Control Valve' },
       { id: 'tab-btn-modes', panelId: 'tab-modes', checkText: 'Objective Two' },
+      { id: 'tab-btn-uml', panelId: 'tab-uml', checkText: 'Software Architecture & UML Diagram Studio' },
       { id: 'tab-btn-quiz', panelId: 'tab-quiz', checkText: 'Self-Test' },
       { id: 'tab-btn-plant', panelId: 'tab-plant', checkText: 'Interactive 3D Shell-and-Tube' }
     ];
@@ -142,5 +143,28 @@ test.describe('Cascade Control ILM 310305e Interactive UI Tests', () => {
     await expect(page.locator('#quiz-banner')).toBeVisible();
     await expect(page.locator('#feedback-1')).toBeVisible();
     await expect(page.locator('#feedback-1')).toContainText('Correct!');
+  });
+
+  test('Architecture & UML Studio renders Mermaid diagrams and switches views', async ({ page }) => {
+    await page.goto('/');
+    await page.click('#tab-btn-uml');
+
+    // Verify UML container is active
+    await expect(page.locator('#tab-uml')).toHaveClass(/active/);
+
+    // Initial view is Class Architecture: check SVG renders
+    const mermaidSvg = page.locator('#uml-mermaid-target svg');
+    await expect(mermaidSvg).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('#uml-diagram-title')).toHaveText('System Class Architecture Diagram');
+
+    // Switch to Sequence Diagram
+    await page.click('#btn-uml-seq');
+    await expect(page.locator('#uml-diagram-title')).toHaveText('60 Hz Simulation Signal Flow (Sequence Diagram)');
+    await expect(page.locator('#uml-mermaid-target svg')).toBeVisible({ timeout: 10000 });
+
+    // Switch to State Machine
+    await page.click('#btn-uml-state');
+    await expect(page.locator('#uml-diagram-title')).toHaveText('Operational Mode State Machine (ILM Objective 2)');
+    await expect(page.locator('#uml-mermaid-target svg')).toBeVisible({ timeout: 10000 });
   });
 });
