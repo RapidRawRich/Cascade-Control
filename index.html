@@ -6,8 +6,8 @@
   <title>ILM 310305e: Cascade Control - Interactive 3D Process Simulator</title>
   <meta name="description" content="Web-based interactive 3D simulations and study guide for Alberta Apprenticeship ILM 310305e: Cascade Control. Features real-time physics, LaTeX formulas, and DCS faceplates.">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%230284c7'/><text x='50' y='62' font-size='36' font-weight='bold' fill='white' text-anchor='middle'>CAS</text></svg>">
-  <script type="module" crossorigin src="./assets/index-VunaXOBN.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-DdwX37V7.css">
+  <script type="module" crossorigin src="./assets/index-ch7c7Uj0.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-TmU4HHig.css">
 </head>
 <body>
   <!-- Application Header -->
@@ -59,101 +59,112 @@
   <main class="app-main">
     <!-- TAB 1: 3D PLANT SIMULATION & STRIP CHARTS -->
     <section class="tab-panel active" id="tab-plant" role="tabpanel">
-      <!-- Real-Time Live Strip Chart Recorder (ABOVE THE FOLD FOR CLASSROOM PROJECTOR) -->
-      <div class="card chart-card chart-card-top">
-        <div class="chart-header">
-          <div class="chart-header-left">
-            <span class="chart-title">Real-Time Industrial Strip Chart (Cascade vs Conventional Response)</span>
-            <div class="projector-kpi-bar" id="projector-kpis">
-              <span class="kpi-chip cas" title="Cascade Loop Outlet Deviation">Cascade ΔT: <strong id="kpi-cas-dev">0.0°C</strong></span>
-              <span class="kpi-chip conv" title="Conventional Single Loop Outlet Deviation">Conv ΔT: <strong id="kpi-conv-dev">0.0°C</strong></span>
-              <span class="kpi-chip badge" id="kpi-suppression-badge">Suppression: <strong>Normal</strong></span>
+      <!-- CLASSROOM COCKPIT BENTO GRID: 100% ABOVE THE FOLD -->
+      <div class="cockpit-grid">
+        <!-- TOP-LEFT: REAL-TIME STRIP CHART RECORDER -->
+        <div class="card cockpit-card chart-cockpit-card">
+          <div class="chart-header">
+            <div class="chart-header-left">
+              <span class="chart-title">Real-Time Process Strip Chart (Cascade vs Conventional)</span>
+              <div class="projector-kpi-bar" id="projector-kpis">
+                <span class="kpi-chip cas" title="Cascade Loop Outlet Deviation">Cascade ΔT: <strong id="kpi-cas-dev">0.0°C</strong></span>
+                <span class="kpi-chip conv" title="Conventional Single Loop Outlet Deviation">Conv ΔT: <strong id="kpi-conv-dev">0.0°C</strong></span>
+                <span class="kpi-chip badge" id="kpi-suppression-badge">Suppression: <strong>Normal</strong></span>
+              </div>
+            </div>
+            <div class="chart-toggles">
+              <label class="pen-toggle-label">
+                <input type="checkbox" id="pen-cas-pv" checked>
+                <span style="color: #06b6d4;">■</span> Cascade PV
+              </label>
+              <label class="pen-toggle-label">
+                <input type="checkbox" id="pen-conv-pv" checked>
+                <span style="color: #f43f5e;">■</span> Conv PV
+              </label>
+              <label class="pen-toggle-label">
+                <input type="checkbox" id="pen-steam-pv" checked>
+                <span style="color: #f59e0b;">■</span> Flow PV
+              </label>
+              <label class="pen-toggle-label">
+                <input type="checkbox" id="pen-valve-pos">
+                <span style="color: #10b981;">■</span> Valve %
+              </label>
+              <label class="pen-toggle-label">
+                <input type="checkbox" id="pen-steam-press" checked>
+                <span style="color: #a855f7;">■</span> Press %
+              </label>
+              <button class="btn-action highlight" id="btn-projector-mode" style="padding: 3px 8px; font-size: 0.75rem;">📽️ Projector</button>
+              <button class="btn-action" id="btn-chart-clear" style="padding: 3px 8px; font-size: 0.75rem;">Clear</button>
             </div>
           </div>
-          <div class="chart-toggles">
-            <label class="pen-toggle-label">
-              <input type="checkbox" id="pen-cas-pv" checked>
-              <span style="color: #06b6d4;">■</span> Cascade Temp PV
-            </label>
-            <label class="pen-toggle-label">
-              <input type="checkbox" id="pen-conv-pv" checked>
-              <span style="color: #f43f5e;">■</span> Conv Temp PV
-            </label>
-            <label class="pen-toggle-label">
-              <input type="checkbox" id="pen-steam-pv" checked>
-              <span style="color: #f59e0b;">■</span> Steam Flow PV
-            </label>
-            <label class="pen-toggle-label">
-              <input type="checkbox" id="pen-valve-pos">
-              <span style="color: #10b981;">■</span> Valve Stem %
-            </label>
-            <label class="pen-toggle-label">
-              <input type="checkbox" id="pen-steam-press" checked>
-              <span style="color: #a855f7;">■</span> Steam Press %
-            </label>
-            <button class="btn-action highlight" id="btn-projector-mode" style="padding: 4px 10px; font-size: 0.75rem;">📽️ Projector Mode</button>
-            <button class="btn-action" id="btn-chart-clear" style="padding: 4px 10px; font-size: 0.75rem;">Clear Chart</button>
+          <div class="canvas-chart-wrap cockpit-chart-wrap">
+            <canvas id="strip-chart-canvas"></canvas>
           </div>
         </div>
-        <div class="canvas-chart-wrap">
-          <canvas id="strip-chart-canvas"></canvas>
-        </div>
-      </div>
 
-      <div class="plant-sim-layout">
-        <!-- 3D Viewport Column -->
-        <div class="card viewport-card">
+        <!-- TOP-RIGHT: INDUSTRIAL DCS CONTROLLER FACEPLATES -->
+        <div class="card cockpit-card dcs-cockpit-card">
+          <div class="cockpit-card-header">
+            <h4>Industrial DCS Faceplates</h4>
+            <span class="badge direct">Master TIC-101 & Slave FIC-101</span>
+          </div>
+          <div class="faceplates-row cockpit-faceplates">
+            <div id="faceplate-tic-container"></div>
+            <div id="faceplate-fic-container"></div>
+          </div>
+        </div>
+
+        <!-- BOTTOM-LEFT: INTERACTIVE 3D SHELL-AND-TUBE REBOILER -->
+        <div class="card cockpit-card plant-cockpit-card">
           <div class="viewport-toolbar">
             <span class="vp-title">Interactive 3D Shell-and-Tube Reboiler (ILM Fig 1 & 3)</span>
             <div class="vp-controls">
               <button class="btn-icon" id="btn-camera-reset">Reset View</button>
             </div>
           </div>
-          <div class="canvas-3d-wrap" id="heat-exchanger-3d-container">
+          <div class="canvas-3d-wrap cockpit-3d-wrap" id="heat-exchanger-3d-container">
             <div class="canvas-overlay-hints">Drag to Rotate • Scroll to Zoom • Right-Click to Pan</div>
-          </div>
-
-          <!-- Disturbance Injection Bar -->
-          <div class="disturbance-bar">
-            <span class="dist-title">Disturbances:</span>
-            <button class="btn-action danger" id="btn-inject-steam-drop">
-              ⚡ Drop Steam Pressure (-30%)
-            </button>
-            <button class="btn-action warn" id="btn-inject-feed-surge">
-              🌊 Cold Feed Surge (+20°C Cooling)
-            </button>
-            <button class="btn-action" id="btn-restore-disturbances">
-              ✓ Restore Normal Operation
-            </button>
           </div>
         </div>
 
-        <!-- DCS Faceplate Column -->
-        <div class="card dcs-panel-card">
-          <h4>Industrial DCS Controller Faceplates</h4>
-          <div class="faceplates-row">
-            <div id="faceplate-tic-container"></div>
-            <div id="faceplate-fic-container"></div>
+        <!-- BOTTOM-RIGHT: DISTURBANCES & LOOP TUNING CONSOLE -->
+        <div class="card cockpit-card control-cockpit-card">
+          <div class="cockpit-card-header">
+            <h4>Process Disturbances & Loop Tuning</h4>
+            <span class="badge reverse">Alberta ILM 310305e Simulator</span>
+          </div>
+
+          <!-- Disturbance Injection Bar -->
+          <div class="disturbance-bar cockpit-dist-bar">
+            <button class="btn-action danger" id="btn-inject-steam-drop">
+              ⚡ Drop Steam (-30%)
+            </button>
+            <button class="btn-action warn" id="btn-inject-feed-surge">
+              🌊 Cold Feed (+20°C)
+            </button>
+            <button class="btn-action" id="btn-restore-disturbances">
+              ✓ Restore Normal
+            </button>
           </div>
 
           <!-- Loop Parameter Tuning Tray -->
-          <div class="param-tuning-tray">
-            <div class="param-row">
-              <label>Secondary Controller Gain (K_c2):</label>
+          <div class="param-tuning-tray cockpit-tuning-tray">
+            <div class="param-row cockpit-param-row">
+              <label>Secondary Gain (K_c2):</label>
               <div class="slider-box">
                 <input type="range" id="slider-kc2" min="0.5" max="8.0" step="0.1" value="2.5">
                 <span class="readout" id="val-kc2">2.5</span>
               </div>
             </div>
-            <div class="param-row">
-              <label>Primary Controller Gain (K_c1):</label>
+            <div class="param-row cockpit-param-row">
+              <label>Primary Gain (K_c1):</label>
               <div class="slider-box">
                 <input type="range" id="slider-kc1" min="0.5" max="5.0" step="0.1" value="1.5">
                 <span class="readout" id="val-kc1">1.5</span>
               </div>
             </div>
-            <div class="param-row">
-              <label>Simulation Speed Multiplier:</label>
+            <div class="param-row cockpit-param-row">
+              <label>Sim Speed:</label>
               <div class="slider-box">
                 <input type="range" id="slider-sim-speed" min="0.5" max="5.0" step="0.5" value="1.0">
                 <span class="readout" id="val-sim-speed">1.0x</span>
