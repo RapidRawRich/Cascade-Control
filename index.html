@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ILM 310305e: Cascade Control - Interactive 3D Process Simulator</title>
+  <meta name="description" content="Web-based interactive 3D simulations and study guide for Alberta Apprenticeship ILM 310305e: Cascade Control. Features real-time physics, LaTeX formulas, and DCS faceplates.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%230284c7'/><text x='50' y='62' font-size='36' font-weight='bold' fill='white' text-anchor='middle'>CAS</text></svg>">
+  <script type="module" crossorigin src="./assets/index-DEgzfSHh.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-cSvjY3pQ.css">
+</head>
+<body>
+  <!-- Application Header -->
+  <header class="app-header">
+    <div class="logo-section">
+      <span class="badge-ilm">ILM 310305e</span>
+      <h1 class="app-title">Cascade Control Interactive Simulation Studio</h1>
+    </div>
+    <div class="header-status-bar">
+      <div class="sim-clock-badge">
+        SIM TIME: <span id="header-sim-time">0.0m</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn-action" id="btn-global-pause">Pause</button>
+        <button class="btn-action" id="btn-global-reset">Reset Plant</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="tab-nav" id="main-nav" role="tablist">
+    <button class="tab-btn active" data-tab="tab-plant" id="tab-btn-plant">
+      🏭 3D Plant Simulation
+    </button>
+    <button class="tab-btn" data-tab="tab-diagrams" id="tab-btn-diagrams">
+      📐 P&ID & Block Diagrams
+    </button>
+    <button class="tab-btn" data-tab="tab-speed" id="tab-btn-speed">
+      ⚡ Response Speed (τ_eff)
+    </button>
+    <button class="tab-btn" data-tab="tab-tuning" id="tab-btn-tuning">
+      🎛️ Tuning & Diagnostics
+    </button>
+    <button class="tab-btn" data-tab="tab-valve" id="tab-btn-valve">
+      🔩 3D Valve & Stiction
+    </button>
+    <button class="tab-btn" data-tab="tab-modes" id="tab-btn-modes">
+      🔄 Modes & Anti-Windup
+    </button>
+    <button class="tab-btn" data-tab="tab-quiz" id="tab-btn-quiz">
+      📝 Self-Test (19 Questions)
+    </button>
+  </nav>
+
+  <!-- Main Viewports -->
+  <main class="app-main">
+    <!-- TAB 1: 3D PLANT SIMULATION & STRIP CHARTS -->
+    <section class="tab-panel active" id="tab-plant" role="tabpanel">
+      <div class="plant-sim-layout">
+        <!-- 3D Viewport Column -->
+        <div class="card viewport-card">
+          <div class="viewport-toolbar">
+            <span class="vp-title">Interactive 3D Shell-and-Tube Reboiler (ILM Fig 1 & 3)</span>
+            <div class="vp-controls">
+              <button class="btn-icon" id="btn-camera-reset">Reset View</button>
+            </div>
+          </div>
+          <div class="canvas-3d-wrap" id="heat-exchanger-3d-container">
+            <div class="canvas-overlay-hints">Drag to Rotate • Scroll to Zoom • Right-Click to Pan</div>
+          </div>
+
+          <!-- Disturbance Injection Bar -->
+          <div class="disturbance-bar">
+            <span class="dist-title">Disturbances:</span>
+            <button class="btn-action danger" id="btn-inject-steam-drop">
+              ⚡ Drop Steam Pressure (-30%)
+            </button>
+            <button class="btn-action warn" id="btn-inject-feed-surge">
+              🌊 Cold Feed Surge (+20°C Cooling)
+            </button>
+            <button class="btn-action" id="btn-restore-disturbances">
+              ✓ Restore Normal Operation
+            </button>
+          </div>
+        </div>
+
+        <!-- DCS Faceplate Column -->
+        <div class="card dcs-panel-card">
+          <h4>Industrial DCS Controller Faceplates</h4>
+          <div class="faceplates-row">
+            <div id="faceplate-tic-container"></div>
+            <div id="faceplate-fic-container"></div>
+          </div>
+
+          <!-- Loop Parameter Tuning Tray -->
+          <div class="param-tuning-tray">
+            <div class="param-row">
+              <label>Secondary Controller Gain (K_c2):</label>
+              <div class="slider-box">
+                <input type="range" id="slider-kc2" min="0.5" max="8.0" step="0.1" value="2.5">
+                <span class="readout" id="val-kc2">2.5</span>
+              </div>
+            </div>
+            <div class="param-row">
+              <label>Primary Controller Gain (K_c1):</label>
+              <div class="slider-box">
+                <input type="range" id="slider-kc1" min="0.5" max="5.0" step="0.1" value="1.5">
+                <span class="readout" id="val-kc1">1.5</span>
+              </div>
+            </div>
+            <div class="param-row">
+              <label>Simulation Speed Multiplier:</label>
+              <div class="slider-box">
+                <input type="range" id="slider-sim-speed" min="0.5" max="5.0" step="0.5" value="1.0">
+                <span class="readout" id="val-sim-speed">1.0x</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Real-Time Live Strip Chart Recorder -->
+      <div class="card chart-card">
+        <div class="chart-header">
+          <span class="chart-title">Real-Time Industrial Strip Chart (Cascade vs Conventional Response)</span>
+          <div class="chart-toggles">
+            <label class="pen-toggle-label">
+              <input type="checkbox" id="pen-cas-pv" checked>
+              <span style="color: #06b6d4;">■</span> Cascade Temp PV
+            </label>
+            <label class="pen-toggle-label">
+              <input type="checkbox" id="pen-conv-pv" checked>
+              <span style="color: #f43f5e;">■</span> Conv Temp PV
+            </label>
+            <label class="pen-toggle-label">
+              <input type="checkbox" id="pen-steam-pv" checked>
+              <span style="color: #f59e0b;">■</span> Steam Flow PV
+            </label>
+            <label class="pen-toggle-label">
+              <input type="checkbox" id="pen-valve-pos">
+              <span style="color: #10b981;">■</span> Valve Stem %
+            </label>
+            <label class="pen-toggle-label">
+              <input type="checkbox" id="pen-steam-press" checked>
+              <span style="color: #a855f7;">■</span> Steam Header Press %
+            </label>
+            <button class="btn-action" id="btn-chart-clear" style="padding: 4px 10px; font-size: 0.75rem;">Clear Chart</button>
+          </div>
+        </div>
+        <div class="canvas-chart-wrap">
+          <canvas id="strip-chart-canvas"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: P&ID & BLOCK DIAGRAMS -->
+    <section class="tab-panel" id="tab-diagrams" role="tabpanel"></section>
+
+    <!-- TAB 3: RESPONSE SPEED -->
+    <section class="tab-panel" id="tab-speed" role="tabpanel"></section>
+
+    <!-- TAB 4: TUNING & DIAGNOSTICS -->
+    <section class="tab-panel" id="tab-tuning" role="tabpanel"></section>
+
+    <!-- TAB 5: 3D VALVE & STICTION -->
+    <section class="tab-panel" id="tab-valve" role="tabpanel">
+      <div class="plant-sim-layout">
+        <!-- 3D Cutaway Valve Container -->
+        <div class="card viewport-card">
+          <div class="viewport-toolbar">
+            <span class="vp-title">Cutaway Pneumatic Control Valve & Actuator (ILM Fig 5 & 11)</span>
+          </div>
+          <div class="canvas-3d-wrap" id="valve-3d-container">
+            <div class="canvas-overlay-hints">Diaphragm, Range Spring, Stem & Contoured Plug</div>
+          </div>
+        </div>
+
+        <!-- Valve Stiction & Characteristics Controls -->
+        <div class="card control-card">
+          <h4>Valve Mechanics, Stiction & Characterization</h4>
+          <p class="card-intro" style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 16px;">
+            Packing friction causes stick-slip where pressure builds in the actuator until overcoming friction, causing a sudden jump. A valve positioner shortens this oscillation cycle.
+          </p>
+
+          <div class="param-row">
+            <label>Packing Stiction Deadband (J_stiction):</label>
+            <div class="slider-box">
+              <input type="range" id="slider-stiction-deadband" min="0.0" max="15.0" step="0.5" value="0.0">
+              <span class="readout" id="val-stiction-deadband">0.0%</span>
+            </div>
+          </div>
+
+          <div class="param-row">
+            <label>Slip Jump Magnitude (S):</label>
+            <div class="slider-box">
+              <input type="range" id="slider-stiction-slip" min="0.0" max="8.0" step="0.5" value="0.0">
+              <span class="readout" id="val-stiction-slip">0.0%</span>
+            </div>
+          </div>
+
+          <div class="param-row">
+            <label>Valve Inherent Flow Characteristic:</label>
+            <div class="perm-selector" style="grid-template-columns: repeat(3, 1fr);">
+              <button class="perm-btn active" id="btn-char-linear">Linear</button>
+              <button class="perm-btn" id="btn-char-eq">Equal %</button>
+              <button class="perm-btn" id="btn-char-quick">Quick Open</button>
+            </div>
+          </div>
+
+          <div class="param-row">
+            <label>Multipoint Characterizer f(x) Linearization:</label>
+            <div class="valve-toggle-group">
+              <button class="btn-toggle active" id="btn-char-off">Bypass f(x)</button>
+              <button class="btn-toggle" id="btn-char-on">Enable f(x) Characterizer</button>
+            </div>
+          </div>
+
+          <div class="ilm-rule-alert">
+            <strong>ILM Objective 4 (p. 49):</strong> The inner loop contains the control valve, so any valve non-linearity must be compensated in the <strong>inner loop</strong> (via positioner or $f(x)$ curve) to present a linear response to the primary loop.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6: MODES & ANTI-WINDUP -->
+    <section class="tab-panel" id="tab-modes" role="tabpanel"></section>
+
+    <!-- TAB 7: SELF-TEST QUIZ -->
+    <section class="tab-panel" id="tab-quiz" role="tabpanel"></section>
+  </main>
+
+</body>
+</html>
