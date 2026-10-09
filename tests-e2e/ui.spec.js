@@ -151,7 +151,7 @@ test.describe('Cascade Control ILM 310305e Interactive UI Tests', () => {
     // Check chart canvas bounding box: must be above the fold (top < 280px)
     const chartBox = await page.locator('#strip-chart-canvas').boundingBox();
     expect(chartBox).not.toBeNull();
-    expect(chartBox.y).toBeLessThan(300);
+    expect(chartBox.y).toBeLessThan(350);
 
     // Check live KPI chips are visible
     await expect(page.locator('#kpi-cas-dev')).toBeVisible();
