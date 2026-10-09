@@ -36,12 +36,22 @@
   padding: 0;
 }
 
+html, body {
+  height: 100%;
+  max-height: 100vh;
+  max-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   background-color: var(--bg-main);
   color: var(--text-main);
-  line-height: 1.5;
-  overflow-x: hidden;
+  line-height: 1.4;
   background-image: 
     radial-gradient(circle at 15% 15%, rgba(6, 182, 212, 0.08) 0%, transparent 40%),
     radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.08) 0%, transparent 40%);
@@ -49,42 +59,42 @@ body {
 }
 
 /* =========================================
-   TOP NAVIGATION & HEADER
+   TOP NAVIGATION & HEADER (COMPACT COCKPIT)
    ========================================= */
 header.app-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 28px;
-  background: rgba(11, 15, 25, 0.85);
+  padding: 6px 18px;
+  height: 46px;
+  flex-shrink: 0;
+  background: rgba(11, 15, 25, 0.92);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-color);
-  position: sticky;
-  top: 0;
   z-index: 100;
 }
 
 .logo-section {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
 .badge-ilm {
   background: linear-gradient(135deg, #0284c7, #0369a1);
   color: #fff;
   font-family: 'Outfit', sans-serif;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
-  padding: 4px 10px;
+  padding: 3px 8px;
   border-radius: var(--radius-sm);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
 .app-title {
   font-family: 'Outfit', sans-serif;
-  font-size: 1.4rem;
+  font-size: 1.15rem;
   font-weight: 700;
   background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
   -webkit-background-clip: text;
@@ -94,44 +104,47 @@ header.app-header {
 .header-status-bar {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 14px;
 }
 
 .sim-clock-badge {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--cyan);
   background: rgba(6, 182, 212, 0.1);
   border: 1px solid rgba(6, 182, 212, 0.25);
-  padding: 6px 14px;
+  padding: 4px 10px;
   border-radius: var(--radius-sm);
 }
 
 /* Tab Navigation */
 nav.tab-nav {
   display: flex;
-  gap: 6px;
-  background: rgba(15, 23, 42, 0.6);
-  padding: 6px 28px;
+  gap: 4px;
+  background: rgba(15, 23, 42, 0.7);
+  padding: 3px 14px;
+  height: 38px;
+  flex-shrink: 0;
   border-bottom: 1px solid var(--border-color);
   overflow-x: auto;
+  align-items: center;
 }
 
 .tab-btn {
   background: transparent;
   color: var(--text-muted);
   border: 1px solid transparent;
-  padding: 7px 14px;
+  padding: 5px 11px;
   border-radius: var(--radius-md);
   font-family: 'Outfit', sans-serif;
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .tab-btn:hover {
@@ -150,19 +163,45 @@ nav.tab-nav {
    MAIN VIEWPORT
    ========================================= */
 main.app-main {
-  max-width: 1540px;
+  width: 100%;
+  max-width: 1720px;
   margin: 0 auto;
-  padding: 14px 20px;
-  min-height: calc(100vh - 110px);
+  padding: 8px 14px;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .tab-panel {
   display: none;
-  animation: fadeIn 0.3s ease;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  animation: fadeIn 0.2s ease;
 }
 
 .tab-panel.active {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+#tab-plant.tab-panel.active {
+  overflow: hidden;
+}
+
+#tab-diagrams.tab-panel.active,
+#tab-speed.tab-panel.active,
+#tab-tuning.tab-panel.active,
+#tab-valve.tab-panel.active,
+#tab-modes.tab-panel.active,
+#tab-uml.tab-panel.active,
+#tab-quiz.tab-panel.active {
+  overflow-y: auto;
+  padding-bottom: 24px;
 }
 
 @keyframes fadeIn {
@@ -235,17 +274,22 @@ main.app-main {
 /* =========================================
    TAB 1: CLASSROOM COCKPIT BENTO GRID (100% ABOVE THE FOLD)
    ========================================= */
+/* =========================================
+   TAB 1: CLASSROOM COCKPIT BENTO GRID (100% ABOVE THE FOLD)
+   ========================================= */
 .cockpit-grid {
   display: grid;
   grid-template-columns: 1.25fr 1fr;
-  grid-template-rows: auto auto;
-  gap: 16px;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px;
   width: 100%;
-  margin-bottom: 20px;
+  height: 100%;
+  min-height: 0;
+  flex: 1;
 }
 
 .cockpit-card {
-  padding: 14px 18px;
+  padding: 8px 12px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -254,7 +298,9 @@ main.app-main {
   background: var(--bg-card);
   backdrop-filter: blur(14px);
   border: 1px solid var(--border-color);
-  min-height: 290px;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
 .chart-cockpit-card {
@@ -263,45 +309,129 @@ main.app-main {
 }
 
 .cockpit-chart-wrap {
+  flex: 1;
+  min-height: 0;
   width: 100%;
-  height: 220px;
+  position: relative;
   border-radius: var(--radius-sm);
   overflow: hidden;
   border: 1px solid var(--border-color);
+}
+
+.cockpit-chart-wrap canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 .cockpit-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
-  padding-bottom: 6px;
+  margin-bottom: 6px;
+  padding-bottom: 4px;
   border-bottom: 1px solid rgba(30, 41, 59, 0.6);
 }
 
 .cockpit-card-header h4 {
   font-family: 'Outfit', sans-serif;
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: #f1f5f9;
   margin: 0;
 }
 
 .cockpit-faceplates {
+  flex: 1;
+  min-height: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 10px;
   margin-bottom: 0;
+  align-items: stretch;
+}
+
+.cockpit-faceplates .faceplate-card {
+  padding: 6px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 0;
+}
+
+.cockpit-faceplates .fp-header {
+  margin-bottom: 4px;
+  padding-bottom: 3px;
+}
+
+.cockpit-faceplates .fp-tag {
+  font-size: 0.9rem;
+}
+
+.cockpit-faceplates .meter-bar-track {
+  width: 20px;
+  height: 95px;
+}
+
+.cockpit-faceplates .meter-val {
+  font-size: 0.75rem;
+}
+
+.cockpit-faceplates .meter-label {
+  font-size: 0.65rem;
+  margin-top: 2px;
+}
+
+.cockpit-faceplates .fp-meter-col {
+  width: 38px;
+}
+
+.cockpit-faceplates .sp-box {
+  padding: 3px 6px;
+}
+
+.cockpit-faceplates .sp-readout {
+  font-size: 1.05rem;
+}
+
+.cockpit-faceplates .sp-buttons {
+  gap: 2px;
+}
+
+.cockpit-faceplates .sp-btn {
+  padding: 2px 4px;
+  font-size: 0.65rem;
+}
+
+.cockpit-faceplates .mode-btn {
+  padding: 2px 6px;
+  font-size: 0.65rem;
+}
+
+.cockpit-faceplates .manual-co-tray {
+  margin-top: 3px;
+  padding: 3px;
 }
 
 .cockpit-3d-wrap {
+  flex: 1;
+  min-height: 0;
   width: 100%;
-  height: 220px;
   background: #090d18;
   border-radius: var(--radius-sm);
   overflow: hidden;
   position: relative;
   border: 1px solid rgba(30, 41, 59, 0.6);
+}
+
+.cockpit-3d-wrap canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 .control-cockpit-card {
@@ -312,16 +442,16 @@ main.app-main {
 
 .cockpit-dist-bar {
   display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: 8px;
+  margin-bottom: 6px;
   flex-wrap: wrap;
 }
 
 .cockpit-dist-bar .btn-action {
   flex: 1;
-  min-width: 110px;
-  padding: 8px 10px;
-  font-size: 0.8rem;
+  min-width: 100px;
+  padding: 6px 8px;
+  font-size: 0.75rem;
   text-align: center;
 }
 
@@ -329,14 +459,14 @@ main.app-main {
   background: rgba(11, 17, 32, 0.6);
   border: 1px solid rgba(30, 41, 59, 0.7);
   border-radius: var(--radius-sm);
-  padding: 8px 12px;
+  padding: 6px 10px;
 }
 
 .cockpit-param-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .cockpit-param-row:last-child {
@@ -344,7 +474,7 @@ main.app-main {
 }
 
 .cockpit-param-row label {
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
   font-family: 'JetBrains Mono', monospace;
   margin-bottom: 0;
@@ -354,9 +484,18 @@ main.app-main {
   width: 52%;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1024px) {
   .cockpit-grid {
     grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    height: auto;
+  }
+  #tab-plant.tab-panel.active {
+    overflow-y: auto;
+  }
+  .cockpit-chart-wrap,
+  .cockpit-3d-wrap {
+    height: 240px;
   }
 }
 

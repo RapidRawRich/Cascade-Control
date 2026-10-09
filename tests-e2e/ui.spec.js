@@ -146,12 +146,20 @@ test.describe('Cascade Control ILM 310305e Interactive UI Tests', () => {
   });
 
   test('Real-Time Strip Chart is above the fold with Projector Mode and live KPI chips', async ({ page }) => {
+    // Emulate MacBook Pro 14-inch browser viewport (1440x750)
+    await page.setViewportSize({ width: 1440, height: 750 });
     await page.goto('/');
 
-    // Check chart canvas bounding box: must be above the fold (top < 280px)
+    // Check chart canvas bounding box: must be above the fold (top < 350px)
     const chartBox = await page.locator('#strip-chart-canvas').boundingBox();
     expect(chartBox).not.toBeNull();
     expect(chartBox.y).toBeLessThan(350);
+
+    // Verify zero page vertical overflow (100% strictly above the fold)
+    const isOverflowing = await page.evaluate(() => {
+      return document.documentElement.scrollHeight > document.documentElement.clientHeight;
+    });
+    expect(isOverflowing).toBe(false);
 
     // Check live KPI chips are visible
     await expect(page.locator('#kpi-cas-dev')).toBeVisible();
