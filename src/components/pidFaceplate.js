@@ -119,6 +119,7 @@ export class PIDFaceplate {
         const delta = parseFloat(btn.dataset.delta);
         this.pid.sp = Math.max(this.pid.pvMin, Math.min(this.pid.pvMax, this.pid.sp + delta));
         if (this.onSPChange) this.onSPChange(this.pid.sp);
+        this.updateDisplay();
       });
     });
 

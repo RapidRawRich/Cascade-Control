@@ -227,38 +227,26 @@ sequenceDiagram
       if (title) title.textContent = 'Operational Mode State Machine (ILM Objective 2)';
       code = `
 stateDiagram-v2
-  [*] --> Config1_FullCascade
+  direction LR
+  [*] --> Config1_FullCascade: Startup
 
-  state "Config 1: Full Cascade (Fig 12)" as Config1_FullCascade {
-    Primary_Auto --> Secondary_Cascade
-  }
+  Config1_FullCascade: Config 1 - Full Cascade (Fig 12)\\nPrimary AUTO | Secondary CASCADE
+  Config2_FullManual: Config 2 - Full Manual (Fig 13)\\nPrimary MANUAL | Secondary MANUAL\\n(Bumpless SP & Output Tracking)
+  Config3_LocalAuto: Config 3 - Local Auto (Fig 14)\\nPrimary MANUAL | Secondary AUTO
+  Config4_RemoteManual: Config 4 - Remote Manual (Fig 15)\\nPrimary MANUAL | Secondary CASCADE
 
-  state "Config 2: Full Manual (Fig 13)" as Config2_FullManual {
-    Primary_Manual_Init --> Secondary_Manual
-    note right of Config2_FullManual : SP tracking enabled\\nSP2 = PV2, SP1 = PV1\\nCO1 = PV2 (Bumpless)
-  }
-
-  state "Config 3: Local Auto (Fig 14)" as Config3_LocalAuto {
-    Primary_Manual_Init --> Secondary_Auto
-    note right of Config3_LocalAuto : Operator adjusts SP2 locally\\nCO1 tracks SP2
-  }
-
-  state "Config 4: Remote Manual (Fig 15)" as Config4_RemoteManual {
-    Primary_Manual --> Secondary_Cascade
-    note right of Config4_RemoteManual : Primary CO sets\\nSecondary RSP directly
-  }
-
-  Config1_FullCascade --> Config2_FullManual : Switch to Manual
-  Config2_FullManual --> Config3_LocalAuto : Secondary to Auto
-  Config3_LocalAuto --> Config4_RemoteManual : Secondary to Cascade
-  Config4_RemoteManual --> Config1_FullCascade : Primary to Auto
+  Config1_FullCascade --> Config2_FullManual: Switch to Manual
+  Config2_FullManual --> Config3_LocalAuto: Secondary to Auto
+  Config3_LocalAuto --> Config4_RemoteManual: Secondary to Cascade
+  Config4_RemoteManual --> Config1_FullCascade: Primary to Auto
 `;
     }
 
     if (desc) desc.innerHTML = this.getDiagramDescription(this.currentDiagram);
 
     try {
-      const renderId = `mermaid-svg-${Date.now()}`;
+      target.innerHTML = '<div style="color: #64748b; font-size: 0.9rem; padding: 20px;">Rendering diagram...</div>';
+      const renderId = `mermaid-svg-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
       const { svg } = await mermaid.render(renderId, code);
       target.innerHTML = svg;
     } catch (err) {

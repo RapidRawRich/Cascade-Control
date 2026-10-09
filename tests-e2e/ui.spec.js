@@ -145,26 +145,61 @@ test.describe('Cascade Control ILM 310305e Interactive UI Tests', () => {
     await expect(page.locator('#feedback-1')).toContainText('Correct!');
   });
 
-  test('Architecture & UML Studio renders Mermaid diagrams and switches views', async ({ page }) => {
+  test('Real-Time Strip Chart is above the fold with Projector Mode and live KPI chips', async ({ page }) => {
+    await page.goto('/');
+
+    // Check chart canvas bounding box: must be above the fold (top < 280px)
+    const chartBox = await page.locator('#strip-chart-canvas').boundingBox();
+    expect(chartBox).not.toBeNull();
+    expect(chartBox.y).toBeLessThan(300);
+
+    // Check live KPI chips are visible
+    await expect(page.locator('#kpi-cas-dev')).toBeVisible();
+    await expect(page.locator('#kpi-conv-dev')).toBeVisible();
+
+    // Toggle Projector Mode
+    const btnProjector = page.locator('#btn-projector-mode');
+    await expect(btnProjector).toBeVisible();
+    await btnProjector.click();
+
+    // Verify body received projector-mode class
+    await expect(page.locator('body')).toHaveClass(/projector-mode/);
+    await expect(btnProjector).toContainText('ON');
+
+    // Toggle off
+    await btnProjector.click();
+    await expect(page.locator('body')).not.toHaveClass(/projector-mode/);
+  });
+
+  test('Architecture & UML Studio thoroughly tested with fast 5s timeouts', async ({ page }) => {
     await page.goto('/');
     await page.click('#tab-btn-uml');
 
-    // Verify UML container is active
+    // Verify UML tab active
     await expect(page.locator('#tab-uml')).toHaveClass(/active/);
 
-    // Initial view is Class Architecture: check SVG renders
-    const mermaidSvg = page.locator('#uml-mermaid-target svg');
-    await expect(mermaidSvg).toBeVisible({ timeout: 10000 });
+    // 1. Class Architecture: verify SVG and class names inside diagram
+    const target = page.locator('#uml-mermaid-target');
+    const svgClass = target.locator('svg');
+    await expect(svgClass).toBeVisible({ timeout: 5000 });
     await expect(page.locator('#uml-diagram-title')).toHaveText('System Class Architecture Diagram');
+    await expect(target).toContainText('CascadeSimulationEngine');
+    await expect(target).toContainText('PIDController');
 
-    // Switch to Sequence Diagram
+    // 2. Sequence Diagram: click and verify sequence participants
     await page.click('#btn-uml-seq');
     await expect(page.locator('#uml-diagram-title')).toHaveText('60 Hz Simulation Signal Flow (Sequence Diagram)');
-    await expect(page.locator('#uml-mermaid-target svg')).toBeVisible({ timeout: 10000 });
+    const svgSeq = target.locator('svg');
+    await expect(svgSeq).toBeVisible({ timeout: 5000 });
+    await expect(target).toContainText('TIC-101');
+    await expect(target).toContainText('FIC-101');
 
-    // Switch to State Machine
+    // 3. State Machine: click and verify 4 operational configurations
     await page.click('#btn-uml-state');
     await expect(page.locator('#uml-diagram-title')).toHaveText('Operational Mode State Machine (ILM Objective 2)');
-    await expect(page.locator('#uml-mermaid-target svg')).toBeVisible({ timeout: 10000 });
+    const svgState = target.locator('svg');
+    await expect(svgState).toBeVisible({ timeout: 5000 });
+    await expect(target).toContainText('Config 1 - Full Cascade');
+    await expect(target).toContainText('Config 2 - Full Manual');
   });
 });

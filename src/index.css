@@ -289,7 +289,7 @@ main.app-main {
 
 .canvas-3d-wrap {
   width: 100%;
-  height: 440px;
+  height: 380px;
   background: #090d18;
   border-radius: var(--radius-md);
   overflow: hidden;
@@ -669,7 +669,13 @@ main.app-main {
    ========================================= */
 .chart-card {
   padding: 18px;
-  margin-bottom: 24px;
+  margin-bottom: 22px;
+}
+
+.chart-card-top {
+  border-color: rgba(6, 182, 212, 0.35);
+  box-shadow: 0 4px 24px rgba(2, 132, 199, 0.12);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(11, 17, 32, 0.95) 100%);
 }
 
 .chart-header {
@@ -677,6 +683,15 @@ main.app-main {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.chart-header-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
 }
 
 .chart-title {
@@ -684,11 +699,61 @@ main.app-main {
   font-size: 1.1rem;
   font-weight: 600;
   color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.projector-kpi-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.kpi-chip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  padding: 4px 9px;
+  border-radius: var(--radius-sm);
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.kpi-chip strong {
+  font-weight: 600;
+}
+
+.kpi-chip.cas {
+  border-color: rgba(6, 182, 212, 0.4);
+  color: #38bdf8;
+  background: rgba(6, 182, 212, 0.1);
+}
+
+.kpi-chip.conv {
+  border-color: rgba(244, 63, 94, 0.4);
+  color: #fb7185;
+  background: rgba(244, 63, 94, 0.1);
+}
+
+.kpi-chip.badge {
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.kpi-chip.badge.alert {
+  border-color: rgba(245, 158, 11, 0.5);
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.15);
 }
 
 .chart-toggles {
   display: flex;
-  gap: 16px;
+  gap: 14px;
+  align-items: center;
   flex-wrap: wrap;
 }
 
@@ -699,14 +764,54 @@ main.app-main {
   font-size: 0.8rem;
   color: var(--text-muted);
   cursor: pointer;
+  user-select: none;
+}
+
+.btn-action.highlight {
+  background: rgba(6, 182, 212, 0.18);
+  border-color: var(--cyan);
+  color: #fff;
+}
+
+.btn-action.highlight.active {
+  background: var(--cyan);
+  color: #090d16;
+  font-weight: 600;
+  box-shadow: 0 0 14px rgba(6, 182, 212, 0.6);
 }
 
 .canvas-chart-wrap {
   width: 100%;
-  height: 280px;
+  height: 290px;
   border-radius: var(--radius-md);
   overflow: hidden;
   border: 1px solid var(--border-color);
+}
+
+/* Classroom Projector Presentation Mode Styles */
+body.projector-mode .chart-title {
+  font-size: 1.3rem;
+}
+
+body.projector-mode .kpi-chip {
+  font-size: 0.95rem;
+  padding: 6px 14px;
+}
+
+body.projector-mode .canvas-chart-wrap {
+  height: 340px;
+}
+
+body.projector-mode .pen-toggle-label {
+  font-size: 0.95rem;
+}
+
+body.projector-mode .vp-title {
+  font-size: 1.2rem;
+}
+
+body.projector-mode .card h4 {
+  font-size: 1.3rem;
 }
 
 /* =========================================

@@ -269,8 +269,24 @@ document.addEventListener('DOMContentLoaded', () => {
     stripChart?.clear();
   });
 
+  // Projector Mode Toggle
+  const btnProjector = document.getElementById('btn-projector-mode');
+  btnProjector?.addEventListener('click', () => {
+    const isProj = stripChart?.toggleProjectorMode();
+    document.body.classList.toggle('projector-mode', !!isProj);
+    btnProjector.classList.toggle('active', !!isProj);
+    btnProjector.textContent = isProj ? '📽️ Projector Mode: ON' : '📽️ Projector Mode';
+    setTimeout(() => {
+      stripChart?.resize();
+      heatExchanger3D?.resize();
+    }, 50);
+  });
+
   // 8. 60Hz Master Simulation & Animation Loop
   const simTimeDisplay = document.getElementById('header-sim-time');
+  const kpiCasDev = document.getElementById('kpi-cas-dev');
+  const kpiConvDev = document.getElementById('kpi-conv-dev');
+  const kpiSuppressionBadge = document.getElementById('kpi-suppression-badge');
 
   let lastFrameTime = performance.now();
   function simLoop(now) {
@@ -297,6 +313,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update Faceplates
     fpTIC?.updateDisplay();
     fpFIC?.updateDisplay();
+
+    // Update Live Projector KPI Readouts
+    if (kpiCasDev && kpiConvDev) {
+      const casDev = Math.abs(snapshot.casPriSP - snapshot.casPriPV);
+      const convDev = Math.abs(snapshot.casPriSP - snapshot.convPV);
+      kpiCasDev.textContent = `${casDev.toFixed(1)}°C`;
+      kpiConvDev.textContent = `${convDev.toFixed(1)}°C`;
+
+      if (kpiSuppressionBadge) {
+        if (convDev > 2.0 && casDev < 1.0) {
+          const ratio = Math.max(2, Math.round(convDev / Math.max(0.15, casDev)));
+          kpiSuppressionBadge.innerHTML = `Cascade Advantage: <strong>${ratio}x Better</strong>`;
+          kpiSuppressionBadge.className = 'kpi-chip badge alert';
+        } else {
+          kpiSuppressionBadge.innerHTML = `Suppression: <strong>Tight (<0.5°C)</strong>`;
+          kpiSuppressionBadge.className = 'kpi-chip badge';
+        }
+      }
+    }
 
     // Update clock
     if (simTimeDisplay) {

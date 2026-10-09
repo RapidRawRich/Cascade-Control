@@ -25,10 +25,21 @@ export class StripChart {
 
     this.dataPoints = [];
     this.paused = false;
+    this.projectorMode = false;
 
     // Handle canvas resolution for crisp HiDPI screens
     this.resize();
     window.addEventListener('resize', () => this.resize());
+  }
+
+  toggleProjectorMode() {
+    this.projectorMode = !this.projectorMode;
+    this.pens.forEach(p => {
+      if (!p._baseWidth) p._baseWidth = p.width;
+      p.width = this.projectorMode ? p._baseWidth * 1.7 : p._baseWidth;
+    });
+    this.render();
+    return this.projectorMode;
   }
 
   resize() {
@@ -68,10 +79,10 @@ export class StripChart {
     if (!w || !h) return;
 
     // Margins
-    const padLeft = 55;
+    const padLeft = this.projectorMode ? 64 : 55;
     const padRight = 20;
     const padTop = 25;
-    const padBottom = 30;
+    const padBottom = this.projectorMode ? 36 : 30;
     const plotW = w - padLeft - padRight;
     const plotH = h - padTop - padBottom;
 
@@ -80,14 +91,14 @@ export class StripChart {
     ctx.fillRect(0, 0, w, h);
 
     // Plot Area Background
-    ctx.fillStyle = '#111827';
+    ctx.fillStyle = this.projectorMode ? '#0f172a' : '#111827';
     ctx.fillRect(padLeft, padTop, plotW, plotH);
 
     // Grid lines & Y-axis labels
-    ctx.strokeStyle = '#1f293d';
-    ctx.lineWidth = 1;
-    ctx.fillStyle = '#94a3b8';
-    ctx.font = '11px "JetBrains Mono", monospace';
+    ctx.strokeStyle = this.projectorMode ? '#334155' : '#1f293d';
+    ctx.lineWidth = this.projectorMode ? 1.5 : 1;
+    ctx.fillStyle = this.projectorMode ? '#f1f5f9' : '#94a3b8';
+    ctx.font = this.projectorMode ? 'bold 13px "JetBrains Mono", monospace' : '11px "JetBrains Mono", monospace';
     ctx.textAlign = 'right';
     ctx.textBaseline = 'middle';
 
@@ -102,7 +113,7 @@ export class StripChart {
       ctx.lineTo(padLeft + plotW, yPos);
       ctx.stroke();
 
-      ctx.fillText(yVal.toFixed(0), padLeft - 8, yPos);
+      ctx.fillText(yVal.toFixed(0), padLeft - (this.projectorMode ? 10 : 8), yPos);
     }
 
     // Time window calculation
@@ -123,7 +134,7 @@ export class StripChart {
       ctx.lineTo(xPos, padTop + plotH);
       ctx.stroke();
 
-      ctx.fillText(`${tVal.toFixed(1)}m`, xPos, padTop + plotH + 8);
+      ctx.fillText(`${tVal.toFixed(1)}m`, xPos, padTop + plotH + (this.projectorMode ? 10 : 8));
     }
 
     if (this.dataPoints.length < 2) return;
