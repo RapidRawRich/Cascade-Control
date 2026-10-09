@@ -6,8 +6,8 @@
   <title>ILM 310305e: Cascade Control - Interactive 3D Process Simulator</title>
   <meta name="description" content="Web-based interactive 3D simulations and study guide for Alberta Apprenticeship ILM 310305e: Cascade Control. Features real-time physics, LaTeX formulas, and DCS faceplates.">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%230284c7'/><text x='50' y='62' font-size='36' font-weight='bold' fill='white' text-anchor='middle'>CAS</text></svg>">
-  <script type="module" crossorigin src="./assets/index-DZo20GKj.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-cSvjY3pQ.css">
+  <script type="module" crossorigin src="./assets/index-VunaXOBN.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DdwX37V7.css">
 </head>
 <body>
   <!-- Application Header -->
@@ -59,6 +59,47 @@
   <main class="app-main">
     <!-- TAB 1: 3D PLANT SIMULATION & STRIP CHARTS -->
     <section class="tab-panel active" id="tab-plant" role="tabpanel">
+      <!-- Real-Time Live Strip Chart Recorder (ABOVE THE FOLD FOR CLASSROOM PROJECTOR) -->
+      <div class="card chart-card chart-card-top">
+        <div class="chart-header">
+          <div class="chart-header-left">
+            <span class="chart-title">Real-Time Industrial Strip Chart (Cascade vs Conventional Response)</span>
+            <div class="projector-kpi-bar" id="projector-kpis">
+              <span class="kpi-chip cas" title="Cascade Loop Outlet Deviation">Cascade ΔT: <strong id="kpi-cas-dev">0.0°C</strong></span>
+              <span class="kpi-chip conv" title="Conventional Single Loop Outlet Deviation">Conv ΔT: <strong id="kpi-conv-dev">0.0°C</strong></span>
+              <span class="kpi-chip badge" id="kpi-suppression-badge">Suppression: <strong>Normal</strong></span>
+            </div>
+          </div>
+          <div class="chart-toggles">
+            <label class="pen-toggle-label">
+              <input type="checkbox" id="pen-cas-pv" checked>
+              <span style="color: #06b6d4;">■</span> Cascade Temp PV
+            </label>
+            <label class="pen-toggle-label">
+              <input type="checkbox" id="pen-conv-pv" checked>
+              <span style="color: #f43f5e;">■</span> Conv Temp PV
+            </label>
+            <label class="pen-toggle-label">
+              <input type="checkbox" id="pen-steam-pv" checked>
+              <span style="color: #f59e0b;">■</span> Steam Flow PV
+            </label>
+            <label class="pen-toggle-label">
+              <input type="checkbox" id="pen-valve-pos">
+              <span style="color: #10b981;">■</span> Valve Stem %
+            </label>
+            <label class="pen-toggle-label">
+              <input type="checkbox" id="pen-steam-press" checked>
+              <span style="color: #a855f7;">■</span> Steam Press %
+            </label>
+            <button class="btn-action highlight" id="btn-projector-mode" style="padding: 4px 10px; font-size: 0.75rem;">📽️ Projector Mode</button>
+            <button class="btn-action" id="btn-chart-clear" style="padding: 4px 10px; font-size: 0.75rem;">Clear Chart</button>
+          </div>
+        </div>
+        <div class="canvas-chart-wrap">
+          <canvas id="strip-chart-canvas"></canvas>
+        </div>
+      </div>
+
       <div class="plant-sim-layout">
         <!-- 3D Viewport Column -->
         <div class="card viewport-card">
@@ -119,39 +160,6 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <!-- Real-Time Live Strip Chart Recorder -->
-      <div class="card chart-card">
-        <div class="chart-header">
-          <span class="chart-title">Real-Time Industrial Strip Chart (Cascade vs Conventional Response)</span>
-          <div class="chart-toggles">
-            <label class="pen-toggle-label">
-              <input type="checkbox" id="pen-cas-pv" checked>
-              <span style="color: #06b6d4;">■</span> Cascade Temp PV
-            </label>
-            <label class="pen-toggle-label">
-              <input type="checkbox" id="pen-conv-pv" checked>
-              <span style="color: #f43f5e;">■</span> Conv Temp PV
-            </label>
-            <label class="pen-toggle-label">
-              <input type="checkbox" id="pen-steam-pv" checked>
-              <span style="color: #f59e0b;">■</span> Steam Flow PV
-            </label>
-            <label class="pen-toggle-label">
-              <input type="checkbox" id="pen-valve-pos">
-              <span style="color: #10b981;">■</span> Valve Stem %
-            </label>
-            <label class="pen-toggle-label">
-              <input type="checkbox" id="pen-steam-press" checked>
-              <span style="color: #a855f7;">■</span> Steam Header Press %
-            </label>
-            <button class="btn-action" id="btn-chart-clear" style="padding: 4px 10px; font-size: 0.75rem;">Clear Chart</button>
-          </div>
-        </div>
-        <div class="canvas-chart-wrap">
-          <canvas id="strip-chart-canvas"></canvas>
         </div>
       </div>
     </section>
