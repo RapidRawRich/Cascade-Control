@@ -35,7 +35,7 @@
       📐 P&ID & Block Diagrams
     </button>
     <button class="tab-btn" data-tab="tab-speed" id="tab-btn-speed">
-      ⚡ Response Speed ($\tau_{eff}$)
+      ⚡ Response Speed (τ_eff)
     </button>
     <button class="tab-btn" data-tab="tab-tuning" id="tab-btn-tuning">
       🎛️ Tuning & Diagnostics
@@ -94,14 +94,14 @@
           <!-- Loop Parameter Tuning Tray -->
           <div class="param-tuning-tray">
             <div class="param-row">
-              <label>Secondary Controller Gain ($K_{c2}$):</label>
+              <label>Secondary Controller Gain (K_c2):</label>
               <div class="slider-box">
                 <input type="range" id="slider-kc2" min="0.5" max="8.0" step="0.1" value="2.5">
                 <span class="readout" id="val-kc2">2.5</span>
               </div>
             </div>
             <div class="param-row">
-              <label>Primary Controller Gain ($K_{c1}$):</label>
+              <label>Primary Controller Gain (K_c1):</label>
               <div class="slider-box">
                 <input type="range" id="slider-kc1" min="0.5" max="5.0" step="0.1" value="1.5">
                 <span class="readout" id="val-kc1">1.5</span>
@@ -182,7 +182,7 @@
           </p>
 
           <div class="param-row">
-            <label>Packing Stiction Deadband ($J_{stiction}$):</label>
+            <label>Packing Stiction Deadband (J_stiction):</label>
             <div class="slider-box">
               <input type="range" id="slider-stiction-deadband" min="0.0" max="15.0" step="0.5" value="0.0">
               <span class="readout" id="val-stiction-deadband">0.0%</span>
@@ -190,7 +190,7 @@
           </div>
 
           <div class="param-row">
-            <label>Slip Jump Magnitude ($S$):</label>
+            <label>Slip Jump Magnitude (S):</label>
             <div class="slider-box">
               <input type="range" id="slider-stiction-slip" min="0.0" max="8.0" step="0.5" value="0.0">
               <span class="readout" id="val-stiction-slip">0.0%</span>
@@ -207,10 +207,10 @@
           </div>
 
           <div class="param-row">
-            <label>Multipoint Characterizer $f(x)$ Linearization:</label>
+            <label>Multipoint Characterizer f(x) Linearization:</label>
             <div class="valve-toggle-group">
-              <button class="btn-toggle active" id="btn-char-off">Bypass $f(x)$</button>
-              <button class="btn-toggle" id="btn-char-on">Enable $f(x)$ Characterizer</button>
+              <button class="btn-toggle active" id="btn-char-off">Bypass f(x)</button>
+              <button class="btn-toggle" id="btn-char-on">Enable f(x) Characterizer</button>
             </div>
           </div>
 

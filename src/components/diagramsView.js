@@ -135,18 +135,18 @@ export class DiagramsView {
             <h4>2. Closed-Loop Disturbance Transfer Function</h4>
             <div id="formula-tf-box" class="math-display"></div>
             <p class="formula-description">
-              In conventional control, load disturbance $D_2$ (steam header pressure drop) directly impacts the process. Under cascade control, the inner loop transfer function divides the disturbance by $1 + G_{c2} G_{p2}$!
+              In conventional control, load disturbance <strong>D₂ (steam header pressure drop)</strong> directly impacts the process. Under cascade control, the inner loop transfer function divides the disturbance by <strong>(1 + G_c2 · G_p2)</strong>, eliminating its impact before it can upset the product temperature!
             </p>
 
             <div class="kpi-grid">
               <div class="kpi-box highlight">
                 <span class="kpi-label">Inner Loop Disturbance Attenuation</span>
-                <span class="kpi-val">$\frac{1}{1 + G_{c2}G_{p2}}$</span>
+                <span class="kpi-val" id="kpi-tf-attenuation"></span>
                 <span class="kpi-sub">Reduces disturbance effect before reaching primary process</span>
               </div>
               <div class="kpi-box success">
                 <span class="kpi-label">Effective Inner Loop Dynamics</span>
-                <span class="kpi-val">$G_{inner}(s) \approx 1.0$</span>
+                <span class="kpi-val" id="kpi-tf-inner"></span>
                 <span class="kpi-sub">Acts as a fast linear actuator to the primary controller</span>
               </div>
             </div>
@@ -250,6 +250,16 @@ export class DiagramsView {
     renderFormula(
       'formula-tf-box',
       `\\frac{Y_1(s)}{D_2(s)} = \\frac{G_{p1}(s) \\cdot G_{p2}(s)}{1 + G_{c2}(s)G_{p2}(s) + G_{c1}(s)G_{c2}(s)G_{p2}(s)G_{p1}(s)}`
+    );
+    renderFormula(
+      'kpi-tf-attenuation',
+      `\\frac{1}{1 + G_{c2}G_{p2}}`,
+      false
+    );
+    renderFormula(
+      'kpi-tf-inner',
+      `G_{inner}(s) \\approx 1.0`,
+      false
     );
   }
 }

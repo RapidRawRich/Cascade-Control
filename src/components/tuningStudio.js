@@ -48,7 +48,7 @@ export class TuningStudio {
             <div class="step-card">
               <div class="step-num">Step 2</div>
               <div class="step-title">Tune Inner Controller</div>
-              <div class="step-desc">Adjust secondary (FIC-101) to achieve <strong>Quarter Amplitude Decay ($DR = 0.25$)</strong> for setpoint changes. P-only is preferred.</div>
+              <div class="step-desc">Adjust secondary (FIC-101) to achieve <strong>Quarter Amplitude Decay (DR = 0.25)</strong> for setpoint changes. P-only is preferred.</div>
             </div>
             <div class="step-card">
               <div class="step-num">Step 3</div>
@@ -58,7 +58,7 @@ export class TuningStudio {
             <div class="step-card">
               <div class="step-num">Step 4</div>
               <div class="step-title">Tune Outer Controller</div>
-              <div class="step-desc">Tune primary controller with inner loop in automatic. Set $T_i \approx 3 \times \tau_{eff}$ or apply IMC/Z-N.</div>
+              <div class="step-desc">Tune primary controller with inner loop in automatic. Set T_i ≈ 3 × τ_eff or apply IMC/Z-N.</div>
             </div>
           </div>
         </div>
@@ -71,7 +71,7 @@ export class TuningStudio {
 
             <div class="calc-inputs">
               <div class="param-row">
-                <label>Primary Time Constant ($\tau_p$):</label>
+                <label>Primary Time Constant (τ_p):</label>
                 <div class="slider-box">
                   <input type="range" id="imc-tau-p" min="0.5" max="10.0" step="0.1" value="${this.imcTauP}">
                   <span class="readout" id="imc-tau-p-val">${this.imcTauP.toFixed(1)} min</span>
@@ -79,7 +79,7 @@ export class TuningStudio {
               </div>
 
               <div class="param-row">
-                <label>Process Dead Time ($\tau_d$):</label>
+                <label>Process Dead Time (τ_d):</label>
                 <div class="slider-box">
                   <input type="range" id="imc-tau-d" min="0.2" max="6.0" step="0.1" value="${this.imcTauD}">
                   <span class="readout" id="imc-tau-d-val">${this.imcTauD.toFixed(1)} min</span>
@@ -87,7 +87,7 @@ export class TuningStudio {
               </div>
 
               <div class="param-row">
-                <label>Process Static Gain ($K_p$):</label>
+                <label>Process Static Gain (K_p):</label>
                 <div class="slider-box">
                   <input type="range" id="imc-kp" min="0.2" max="3.0" step="0.1" value="${this.imcKp}">
                   <span class="readout" id="imc-kp-val">${this.imcKp.toFixed(1)}</span>
@@ -99,11 +99,11 @@ export class TuningStudio {
 
             <div class="kpi-grid">
               <div class="kpi-box highlight">
-                <span class="kpi-label">Recommended Gain ($K_c$)</span>
+                <span class="kpi-label">Recommended Gain (K_c)</span>
                 <span class="kpi-val" id="kpi-imc-kc">0.70</span>
               </div>
               <div class="kpi-box success">
-                <span class="kpi-label">Integral Time ($T_i$)</span>
+                <span class="kpi-label">Integral Time (T_i)</span>
                 <span class="kpi-val" id="kpi-imc-ti">2.70 min</span>
               </div>
             </div>
@@ -111,7 +111,7 @@ export class TuningStudio {
 
           <!-- 3. Quarter Amplitude Decay Visualizer -->
           <div class="card plot-card">
-            <h4>3. Quarter Amplitude Decay ($DR = A_2 / A_1 = 0.25$)</h4>
+            <h4>3. Quarter Amplitude Decay (DR = A2 / A1 = 0.25)</h4>
             <div id="formula-decay-box" class="math-display"></div>
             <canvas id="decay-canvas" height="180"></canvas>
             <div class="ilm-rule-alert">

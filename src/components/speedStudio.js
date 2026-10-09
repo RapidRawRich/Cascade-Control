@@ -44,7 +44,7 @@ export class SpeedStudio {
           <div class="card control-card">
             <h4>1. Adjust Inner Loop Parameters</h4>
             <div class="param-row">
-              <label>Secondary Open-Loop Time Constant ($\tau_p$):</label>
+              <label>Secondary Open-Loop Time Constant (τ_p):</label>
               <div class="slider-box">
                 <input type="range" id="speed-tau-p" min="1.0" max="20.0" step="0.2" value="${this.tauP}">
                 <span class="readout" id="speed-tau-p-val">${this.tauP.toFixed(1)} min</span>
@@ -52,7 +52,7 @@ export class SpeedStudio {
             </div>
 
             <div class="param-row">
-              <label>Secondary Process Static Gain ($K_p$):</label>
+              <label>Secondary Process Static Gain (K_p):</label>
               <div class="slider-box">
                 <input type="range" id="speed-kp" min="0.5" max="5.0" step="0.1" value="${this.Kp}">
                 <span class="readout" id="speed-kp-val">${this.Kp.toFixed(1)}</span>
@@ -60,7 +60,7 @@ export class SpeedStudio {
             </div>
 
             <div class="param-row">
-              <label>Secondary Controller Proportional Gain ($K_c$):</label>
+              <label>Secondary Controller Proportional Gain (K_c):</label>
               <div class="slider-box">
                 <input type="range" id="speed-kc" min="0.1" max="10.0" step="0.1" value="${this.Kc}">
                 <span class="readout" id="speed-kc-val">${this.Kc.toFixed(1)}</span>
@@ -68,7 +68,7 @@ export class SpeedStudio {
             </div>
 
             <div class="param-row">
-              <label>Outer (Primary) Loop Time Constant ($\tau_{outer}$):</label>
+              <label>Outer (Primary) Loop Time Constant (τ_outer):</label>
               <div class="slider-box">
                 <input type="range" id="speed-tau-outer" min="5.0" max="50.0" step="1.0" value="${this.tauOuter}">
                 <span class="readout" id="speed-tau-outer-val">${this.tauOuter.toFixed(1)} min</span>
@@ -94,13 +94,13 @@ export class SpeedStudio {
 
             <div class="kpi-grid">
               <div class="kpi-box highlight">
-                <span class="kpi-label">Effective Time Constant ($\tau_{eff}$)</span>
+                <span class="kpi-label">Effective Time Constant (τ_eff)</span>
                 <span class="kpi-val" id="kpi-tau-eff">${tauEff.toFixed(2)} min</span>
                 <span class="kpi-sub" id="kpi-reduction-pct">${(((this.tauP - tauEff) / this.tauP) * 100).toFixed(0)}% Speedup</span>
               </div>
 
               <div class="kpi-box ${speedRatio >= 3.0 ? 'success' : 'warning'}">
-                <span class="kpi-label">Speed Ratio ($\tau_{outer} / \tau_{eff}$)</span>
+                <span class="kpi-label">Speed Ratio (τ_outer / τ_eff)</span>
                 <span class="kpi-val" id="kpi-speed-ratio">${speedRatio.toFixed(1)} : 1</span>
                 <span class="kpi-sub" id="kpi-ratio-status">${speedRatio >= 3.0 ? 'Rule Met (≥ 3:1)' : 'Too Slow (< 3:1)'}</span>
               </div>
